@@ -1,0 +1,10 @@
+/bin/
+/logs/
+/data/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/document/
