@@ -60,7 +60,7 @@ public class LimitPanel extends JPanel {
 		limitTimeTextField.setHorizontalAlignment(JTextField.CENTER);
 
 		JButton addButton = new CustomButtonBlue(MessageUt.getMessage("limit.add"));
-		JButton lookupButton = new CustomButtonBasic(MessageUt.getMessage("limit.lookup"));
+		JButton lookupButton = new CustomButtonBasic(MessageUt.getMessage("lookup"));
 
 		String col_names[] = MessageUt.getMessage("limit.col_names").split(",");
 		model = new DefaultTableModel(col_names, 0) {

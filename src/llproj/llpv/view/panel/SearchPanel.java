@@ -38,8 +38,8 @@ public class SearchPanel extends JPanel {
 
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		JTextField searchTextField = new JTextField(10);
-		JButton searchButton = new CustomButtonBasic(MessageUt.getMessage("search"));
+		JTextField searchTextField = new JTextField(30);
+		JButton searchButton = new CustomButtonBasic(MessageUt.getMessage("lookup"));
 		JLabel splitTimeText = new JLabel("~");
 		startTimeTextField = new JFormattedTextField(sdf);
 		endTimeTextField = new JFormattedTextField(sdf);
@@ -101,10 +101,10 @@ public class SearchPanel extends JPanel {
 		searchButton.doClick();
 
 		searchTop.add(searchTextField);
-		searchTop.add(searchButton);
 		searchTop.add(startTimeTextField);
 		searchTop.add(splitTimeText);
 		searchTop.add(endTimeTextField);
+		searchTop.add(searchButton);
 		searchBottom.setViewportView(searchTable);
 
 		this.add(searchTop, BorderLayout.NORTH);
