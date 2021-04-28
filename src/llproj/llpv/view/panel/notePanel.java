@@ -47,7 +47,7 @@ public class notePanel extends JPanel {
 
 	public notePanel(Database db) {
 
-		JPanel noteLayout = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15)); // JPanel 생성
+		JPanel noteLayout = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
 
 		datetimePane = new JScrollPane();
 		notePane = new JScrollPane();
@@ -184,7 +184,6 @@ public class notePanel extends JPanel {
 				}
 
 			}
-			// 지웠는데 다 없으
 		});
 
 		datetimePane.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -192,7 +191,6 @@ public class notePanel extends JPanel {
 		datetimePane.setViewportView(datetimeArea);
 		notePane.setViewportView(noteArea);
 
-		// 메모 불러오기
 		db.getNote(noteArea);
 
 		updateDateStr();

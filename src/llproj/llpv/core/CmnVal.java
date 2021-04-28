@@ -4,6 +4,8 @@ import java.awt.Font;
 
 import org.json.JSONObject;
 
+import llproj.llpv.util.MessageUt;
+
 public class CmnVal {
 	public static final String process_title = "llprocessView";
 	public static final String Version = "v1.0";
@@ -25,8 +27,8 @@ public class CmnVal {
 	public static String rank_to_time = "";
 	public static JSONObject limitList = new JSONObject();
 
-	public static Font font = new Font("µ¸¿ò", Font.PLAIN, 12);
-	public static Font font_b = new Font("µ¸¿ò", Font.PLAIN, 12);
+	public static Font font = new Font(MessageUt.getMessage("font"), Font.PLAIN, 12);
+	public static Font font_b = new Font(MessageUt.getMessage("font"), Font.PLAIN, 12);
 
 	public static String[] dates = new String[note_rows];
 }

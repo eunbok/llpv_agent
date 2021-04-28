@@ -25,6 +25,7 @@ import llproj.llpv.core.CmnVal;
 import llproj.llpv.core.UpdateRankThread;
 import llproj.llpv.db.Database;
 import llproj.llpv.util.CmnUt;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class RankPanel extends JPanel {
@@ -37,14 +38,14 @@ public class RankPanel extends JPanel {
 		JComboBox<String> viewComboBox = new JComboBox<>();
 		JComboBox<String> timeComboBox = new JComboBox<>();
 
-		JLabel splitTimeText = new JLabel("~"); // 시간지정
+		JLabel splitTimeText = new JLabel("~");
 		splitTimeText.setFont(CmnVal.font);
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		JFormattedTextField startTimeTextField = new JFormattedTextField(sdf);
 		JFormattedTextField endTimeTextField = new JFormattedTextField(sdf);
 
 		viewComboBox.setFont(CmnVal.font);
-		viewComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "프로세스명", "프로그램 제목" }));
+		viewComboBox.setModel(new DefaultComboBoxModel<>(MessageUt.getMessage("rank.view_names").split(",")));
 		viewComboBox.setBackground(Color.white);
 		viewComboBox.setFocusable(false);
 		viewComboBox.addActionListener(new ActionListener() {
@@ -67,7 +68,7 @@ public class RankPanel extends JPanel {
 		}
 
 		timeComboBox.setFont(CmnVal.font);
-		timeComboBox.setModel(new DefaultComboBoxModel<>(new String[] { "실행시간", "24시간", "오늘", "일주일", "한달", "시간지정" }));
+		timeComboBox.setModel(new DefaultComboBoxModel<>(MessageUt.getMessage("rank.time_names").split(",")));
 		timeComboBox.setBackground(Color.white);
 		timeComboBox.setFocusable(false);
 		timeComboBox.addActionListener(new ActionListener() {
@@ -113,7 +114,7 @@ public class RankPanel extends JPanel {
 			lists[i].setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 			rankBottom.add(lists[i]);
 		}
-		lists[0].setText("시간이 지나면 자동으로 갱신됩니다. (활성화 상태 프로그램의 사용시간을 저장합니다)");
+		lists[0].setText(MessageUt.getMessage("rank.info"));
 
 		this.add(rankTop, BorderLayout.NORTH);
 		this.add(rankBottom, BorderLayout.CENTER);

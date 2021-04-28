@@ -15,10 +15,10 @@ import org.apache.log4j.Logger;
 
 import llproj.llpv.ServerStart;
 import llproj.llpv.util.CmnUt;
+import llproj.llpv.util.MessageUt;
 
 public class UpdateAlarmThread implements Runnable {
 	private static final Logger log = Logger.getLogger(UpdateAlarmThread.class);
-//	JTabbedPane panel;
 	JLabel label1;
 	JLabel label2;
 	JTabbedPane t;
@@ -60,19 +60,15 @@ public class UpdateAlarmThread implements Runnable {
 					String now_time = sdf.format(now_dt);
 
 					if (is_run) {
-						label2.setText(
-								"남은 사용시간 : " + CmnUt.secToTime((int) ((alarm_run_dt.getTime() - now_dt_gt) / 1000)));
+						label2.setText(MessageUt.getMessage("alarm.run_dt",CmnUt.secToTime((int) ((alarm_run_dt.getTime() - now_dt_gt) / 1000))));
 					} else {
-						label2.setText(
-								"남은 휴식시간 : " + CmnUt.secToTime((int) ((alarm_rest_dt.getTime() - now_dt_gt) / 1000)));
+						label2.setText(MessageUt.getMessage("alarm.rest_dt",CmnUt.secToTime((int) ((alarm_rest_dt.getTime() - now_dt_gt) / 1000))));
 					}
 
 					if (check_run_time.equals(now_time)) {
-						log.info("사용시간 경과 | 휴식 시작 알림");
+						log.info("End of Run time and start Rest time");
 						frame.setState(frame.NORMAL);
-						// 윈도우 표시
 						frame.setVisible(true);
-						// 윈도우 포커싱
 						if (frame.getFocusableWindowState()) {
 							frame.requestFocus();
 						}
@@ -80,23 +76,21 @@ public class UpdateAlarmThread implements Runnable {
 						String cmd = "rundll32 user32.dll, LockWorkStation";
 						Runtime.getRuntime().exec(cmd);
 						
-						ServerStart.trayIcon.displayMessage("llpv 알림", "사용시간 경과 | 휴식 시작", TrayIcon.MessageType.INFO);
+						ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"), MessageUt.getMessage("tray.alarm.run"), TrayIcon.MessageType.INFO);
 						alarm_run_dt.setMinutes(alarm_run_dt.getMinutes() + Integer.parseInt(CmnVal.alarm_run)
 								+ Integer.parseInt(CmnVal.alarm_rest));
 						is_run = false;
 					}
 
 					if (check_rest_time.equals(now_time)) {
-						log.info("휴식 종료 | 사용 시작 알림");
+						log.info("End of rest time and start Run time");
 						if (!"0".equals(CmnVal.alarm_rest)) {
 							frame.setState(frame.NORMAL);
-							// 윈도우 표시
 							frame.setVisible(true);
-							// 윈도우 포커싱
 							if (frame.getFocusableWindowState()) {
 								frame.requestFocus();
 							}
-							ServerStart.trayIcon.displayMessage("llpv 알림", "휴식 종료 | 사용 시작", TrayIcon.MessageType.INFO);
+							ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"), MessageUt.getMessage("tray.alarm.rest"), TrayIcon.MessageType.INFO);
 						}
 						alarm_rest_dt.setMinutes(alarm_rest_dt.getMinutes() + Integer.parseInt(CmnVal.alarm_run)
 								+ Integer.parseInt(CmnVal.alarm_rest));

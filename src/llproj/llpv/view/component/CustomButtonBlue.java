@@ -48,11 +48,11 @@ public class CustomButtonBlue extends JButton {
 		int height = getHeight()-2;
 		Graphics2D graphics = (Graphics2D) g;
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if (getModel().isArmed()) { //눌린상태
+		if (getModel().isArmed()) {
 			graphics.setColor(new Color(36,51,65));
-		} else if (getModel().isRollover()) { //올린상태
+		} else if (getModel().isRollover()) {
 			graphics.setColor(new Color(52,73,94));
-		} else { //기본상태
+		} else {
 			graphics.setColor(new Color(40,104,174));
 		}
 		graphics.fillRoundRect(0, 0, width-1, height-1, 0, 0);
@@ -63,7 +63,7 @@ public class CustomButtonBlue extends JButton {
 		Rectangle stringBounds = fontMetrics.getStringBounds(this.getText(), graphics).getBounds();
 		int textX = (width - stringBounds.width) / 2;
 		int textY = (height - stringBounds.height) / 2 + fontMetrics.getAscent();
-		graphics.setColor(getForeground().white); // 글자색
+		graphics.setColor(getForeground().white);
 		graphics.setFont(getFont());
 		graphics.drawString(getText(), textX, textY);
 		graphics.dispose();

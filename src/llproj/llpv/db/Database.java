@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import llproj.llpv.ServerStart;
 import llproj.llpv.core.CmnVal;
 import llproj.llpv.util.CmnUt;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class Database {
@@ -44,7 +45,6 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS t_data(";
@@ -159,7 +159,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -208,7 +208,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -268,7 +268,6 @@ public class Database {
 			}
 
 			sql = select + from + where + group_by + order_by + limit;
-			// 오늘, 일주일, 한달에 맞게 sql문 변경하기
 
 			stmt = con.createStatement();
 
@@ -297,7 +296,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -348,7 +347,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -390,7 +389,6 @@ public class Database {
 					+ "%'))";
 
 			sql = select + from + where + group_by + order_by;
-			// 오늘, 일주일, 한달에 맞게 sql문 변경하기
 
 			stmt = con.createStatement();
 
@@ -408,7 +406,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -434,7 +432,6 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "SELECT config_value ";
@@ -447,7 +444,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -470,11 +467,9 @@ public class Database {
 	public void setConfig(String config_code, String value) {
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "update t_config set config_value = '" + value + "' where config_code = '" + config_code
@@ -484,7 +479,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -506,11 +501,9 @@ public class Database {
 	public void deleteDB() {
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "delete from t_data;";
@@ -519,7 +512,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -559,7 +552,6 @@ public class Database {
 			where = "";
 
 			sql = select + from + where + group_by + order_by;
-			// 오늘, 일주일, 한달에 맞게 sql문 변경하기
 
 			stmt = con.createStatement();
 
@@ -579,7 +571,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -607,7 +599,6 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String limit_id = run_file + CmnVal.split_str + run_title;
@@ -616,7 +607,6 @@ public class Database {
 					+ "');";
 			stmt.execute(sql);
 
-			// @ static map에다 넣기
 			JSONObject jo = new JSONObject();
 			jo.put("run_file", run_file);
 			jo.put("run_title", run_title);
@@ -627,10 +617,10 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 			if (e.getMessage().contains("primary key")) {
-				ServerStart.trayIcon.displayMessage("llpv 알림", "이미 존재하는 규칙입니다.", TrayIcon.MessageType.INFO);
+				ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"), MessageUt.getMessage("tray.limit.exist_rule"), TrayIcon.MessageType.INFO);
 			}
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -652,11 +642,9 @@ public class Database {
 	public void deleteLimit(String value) {
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "delete from t_limit where limit_id='" + value + "';";
@@ -665,7 +653,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -691,7 +679,6 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "update t_limit set run_sec = 0;";
@@ -706,7 +693,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -729,11 +716,9 @@ public class Database {
 		// TODO Auto-generated method stub
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "update t_limit set run_sec = " + sec + " where limit_id = '" + limit_id + "';";
@@ -741,7 +726,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -763,11 +748,9 @@ public class Database {
 	public void updateNote(String note_dt, String note_text) {
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 
@@ -777,7 +760,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -799,11 +782,9 @@ public class Database {
 	public void getNote(JTextArea jTextArea5_2) {
 		Connection con = null;
 		Statement stmt = null;
-		String result = "";
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, 사용자, 비밀번호
 
 			stmt = con.createStatement();
 			String sql = "SELECT note_dt, note_text ";
@@ -820,7 +801,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver 오류 : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver error : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {

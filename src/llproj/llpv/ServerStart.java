@@ -6,7 +6,9 @@ import java.awt.TrayIcon;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -15,6 +17,7 @@ import llproj.llpv.core.CmnVal;
 import llproj.llpv.core.GetProcessThread;
 import llproj.llpv.core.SendDataThread;
 import llproj.llpv.db.Database;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.view.MainView;
 
 public class ServerStart {
@@ -29,17 +32,22 @@ public class ServerStart {
 		FileInputStream log4jRead = new FileInputStream("log4j.properties");
 		Properties log4jProperty = new Properties();
 		log4jProperty.load(log4jRead);
-		// property Å¸ÀÔÀ¸·Î ÀĞ¾î¼­ configure¿Í ¿¬µ¿
 		PropertyConfigurator.configure(log4jProperty);
 		log.info("[llprocessview " + CmnVal.Version + " Start ]");
-		// @todo ³ªÁß¿¡ »ç¿ëÀÚ ÀÔ·Â¹Ş±â
+		
+		FileInputStream fileInputStream = new FileInputStream("llpv.properties");
+		Properties property = new Properties();
+		property.load(fileInputStream);
+		
+		MessageUt.setLocale(property.getProperty("lang"));
+		
+		//TODO ë‚˜ì¤‘ì— ì‚¬ìš©ì ì…ë ¥ë°›ê¸°
 		boolean local_mode = true;
 		String url = "./data/llpv";
 		String id = "root";
 		String pass = "";
 
 		
-		// µğºñ»ı¼º
 		Database db = null;
 		if (local_mode) {
 			db = new Database(url, id, pass);
@@ -48,17 +56,12 @@ public class ServerStart {
 		
 		new MainView(db);
 		
-		// ÇÁ·Î¼¼½º ½ÇÇà
 		GetProcessThread getProcessRunnable = new GetProcessThread(db);
 		Thread getProcessThread = new Thread(getProcessRunnable);
 		getProcessThread.start();
 
-		// µ¥ÀÌÅÍ ¿¬µ¿ ¾²·¹µå
 		SendDataThread sendDataRunnable = new SendDataThread(db);
 		Thread sendDataThread = new Thread(sendDataRunnable);
 		sendDataThread.start();
-
-		
-		// ÁÖ±âÀûÀ¸·Î Åë°è µ¥ÀÌÅÍ ¸¸µé¾îÁÖ´Â ½ºÄÉÁÙ·¯ (µ¿±âÈ­ ½Ã°£ ÀúÀåÇÏ´Â ÇÁ·Î±×·¥µµ ¸¸µé¾î¾ßÇÔ)
 	}
 }
