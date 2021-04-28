@@ -15,6 +15,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.ptr.IntByReference;
 
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class GetProcessJob {
@@ -26,7 +27,7 @@ public class GetProcessJob {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		_datetime = sdf.format(new Date());
 		
-		// @exp finding run_file
+		//finding run_file
 		HMODULE hMod = Kernel32.INSTANCE.GetModuleHandle(null);
 		final int PROCESS_VM_READ = 0x0010;
 		final int PROCESS_QUERY_INFORMATION = 0x0400;
@@ -42,7 +43,7 @@ public class GetProcessJob {
 		try {
 			Psapi.INSTANCE.GetModuleBaseNameW(processHandle.getPointer(), Pointer.NULL, filename, filename.length);
 		} catch (Exception e) {
-			log.error("프로그램명 찾을 수 없음");
+			log.error(MessageUt.getMessage("error.unknown"));
 		}
 		String file_id = "";
 		for (int i = 0; i < filename.length; i++) {
@@ -51,19 +52,14 @@ public class GetProcessJob {
 		}
 		
 		run_file = !file_id.equals("")?file_id:"Unknown File";
-		///////////////////////////
 		
-		// @exp finding run_titie
+		//finding run_titie
 		HWND fgWindow = User32.INSTANCE.GetForegroundWindow();
 		int titleLength = User32.INSTANCE.GetWindowTextLength(fgWindow) + 1;
 		char[] title = new char[titleLength];
 		User32.INSTANCE.GetWindowText(fgWindow, title, titleLength);
 
 		run_title = Native.toString(title);
-		///////////////////////////
-
-		
-
 		
 		DataVO dv = new DataVO();
 		dv.setRun_file(run_file);

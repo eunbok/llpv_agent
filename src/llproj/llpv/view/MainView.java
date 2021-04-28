@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import llproj.llpv.ServerStart;
 import llproj.llpv.core.CmnVal;
 import llproj.llpv.db.Database;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.view.panel.LimitPanel;
 import llproj.llpv.view.panel.RankPanel;
 import llproj.llpv.view.panel.SearchPanel;
@@ -57,11 +58,11 @@ public class MainView extends JFrame {
 		tabbedPane.setUI(new MetalTabbedPaneUI() {
 		});
 
-		tabbedPane.add("순위", rankPanel);
-		tabbedPane.add("검색", searchPanel);
-		tabbedPane.add("제한", limitPanel);
-		tabbedPane.add("설정", settingPanel);
-		tabbedPane.add("메모", notePanel);
+		tabbedPane.add(MessageUt.getMessage("rank"), rankPanel);
+		tabbedPane.add(MessageUt.getMessage("search"), searchPanel);
+		tabbedPane.add(MessageUt.getMessage("limit"), limitPanel);
+		tabbedPane.add(MessageUt.getMessage("setting"), settingPanel);
+		tabbedPane.add(MessageUt.getMessage("note"), notePanel);
 		tabbedPane.setFont(CmnVal.font);
 		tabbedPane.setFocusable(false);
 		tabbedPane.addChangeListener(new ChangeListener() {

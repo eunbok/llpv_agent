@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import llproj.llpv.db.Database;
 import llproj.llpv.util.CmnUt;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class UpdateRankThread implements Runnable {
@@ -37,7 +38,7 @@ public class UpdateRankThread implements Runnable {
 					}
 					
 					if(data_arr.size() == 0) {
-						label[0].setText("시간이 지나면 자동으로 갱신됩니다. (활성화 상태 프로그램의 사용시간을 저장합니다)");
+						label[0].setText(MessageUt.getMessage("rank.info"));
 					}
 					
 					for (int i = 0; i < data_arr.size(); i++) {

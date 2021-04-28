@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import llproj.llpv.core.CmnVal;
 import llproj.llpv.db.Database;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.view.component.CustomButtonBasic;
 
 public class SearchPanel extends JPanel {
@@ -29,8 +30,8 @@ public class SearchPanel extends JPanel {
 	JFormattedTextField endTimeTextField;
 
 	public SearchPanel(Database db) {
-		JPanel searchTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15)); // JPanel 생성
-		JScrollPane searchBottom = new JScrollPane(); // JPanel 생성
+		JPanel searchTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 15));
+		JScrollPane searchBottom = new JScrollPane();
 
 		searchTop.setPreferredSize(new Dimension(850, 50));
 		searchBottom.setPreferredSize(new Dimension(800, 300));
@@ -38,7 +39,7 @@ public class SearchPanel extends JPanel {
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		JTextField searchTextField = new JTextField(10);
-		JButton searchButton = new CustomButtonBasic("검색");
+		JButton searchButton = new CustomButtonBasic(MessageUt.getMessage("search"));
 		JLabel splitTimeText = new JLabel("~");
 		startTimeTextField = new JFormattedTextField(sdf);
 		endTimeTextField = new JFormattedTextField(sdf);
@@ -52,7 +53,7 @@ public class SearchPanel extends JPanel {
 		startTimeTextField.setColumns(11);
 		endTimeTextField.setColumns(11);
 
-		String colNames[] = { "프로세스명", "프로그램 제목", "시작시간", "사용시간" };
+		String colNames[] = MessageUt.getMessage("search.col_names").split(",");
 		DefaultTableModel model = new DefaultTableModel(colNames, 0) {
 			public boolean isCellEditable(int row, int column) {
 				switch (column) {

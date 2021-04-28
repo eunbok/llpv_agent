@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import llproj.llpv.ServerStart;
 import llproj.llpv.db.Database;
+import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class GetProcessThread implements Runnable {
@@ -36,17 +37,17 @@ public class GetProcessThread implements Runnable {
 			DataVO beforeDv;
 
 			Calendar now;
-			while(true){
-				 now = Calendar.getInstance();
-				if("000".equals(sdf2.format(now.getTime()))) {
+			while (true) {
+				now = Calendar.getInstance();
+				if ("000".equals(sdf2.format(now.getTime()))) {
 					break;
 				}
 				Thread.sleep(1);
 			}
- 
+
 			while (true) {
 				if (now.getTime().getTime() <= new Date().getTime()) {
-//					log.debug("0초에 가까이 시간이 찍히는지 확인 : "sdf1.format(new Date()));
+//					log.debug("check near 0 sec : "sdf1.format(new Date()));
 					dv = new GetProcessJob().getProgram();
 
 					LimitProcess(dv);
@@ -84,7 +85,7 @@ public class GetProcessThread implements Runnable {
 						runTitle = dv.getRun_title();
 						_datetime = dv.get_datetime();
 					}
-					
+
 					now.add(Calendar.SECOND, 1);
 				}
 				Thread.sleep(10);
@@ -122,7 +123,6 @@ public class GetProcessThread implements Runnable {
 	}
 
 	private void updateLimitRunSec(String key, String run_file, String run_title, int pid) throws Exception {
-		// TODO Auto-generated method stub
 		if (CmnVal.limitList.has(key)) {
 			int sec = CmnVal.limitList.getJSONObject(key).getInt("run_sec") + 1;
 			int limit_min = CmnVal.limitList.getJSONObject(key).getInt("limit_min");
@@ -131,23 +131,23 @@ public class GetProcessThread implements Runnable {
 
 			if (CmnVal.is_use_limit) {
 				if ((limit_min - 5) * 60 == sec) {
-					ServerStart.trayIcon.displayMessage("llpv 알림", "[제한기능] 5분 후 '" + run_file + "' 이 종료 됩니다.",
-							TrayIcon.MessageType.INFO);
-					log.info("제한시간 초과로 프로그램 강제종료 = " + run_file + " - " + run_title + "(" + limit_min + "분)");
+					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+							MessageUt.getMessage("tray.limit.waring", "5", run_file), TrayIcon.MessageType.INFO);
+					log.info(MessageUt.getMessage("tray.limit.waring", "5", run_file));
 				}
 
 				if ((limit_min - 1) * 60 == sec) {
-					ServerStart.trayIcon.displayMessage("llpv 알림", "[제한기능] 1분 후 '" + run_file + "'이 종료 됩니다.",
-							TrayIcon.MessageType.INFO);
-					log.info("제한시간 초과로 프로그램 강제종료 = " + run_file + " - " + run_title + "(" + limit_min + "분)");
+					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+							MessageUt.getMessage("tray.limit.waring", "1", run_file), TrayIcon.MessageType.INFO);
+					log.info(MessageUt.getMessage("tray.limit.waring", "1", run_file));
 				}
 
 				if (limit_min * 60 <= sec) {
 					String cmd = "taskkill /F /PID " + pid;
 					Runtime.getRuntime().exec(cmd);
-					log.info("제한시간 초과로 프로그램 강제종료 = " + run_file + " - " + run_title + "(" + limit_min + "분)");
-					ServerStart.trayIcon.displayMessage("llpv 알림", "[제한기능] '" + run_file + "'이 종료 됩니다.",
-							TrayIcon.MessageType.INFO);
+					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+							MessageUt.getMessage("tray.limit.alert", run_file), TrayIcon.MessageType.INFO);
+					log.info(MessageUt.getMessage("tray.limit.alert", run_file));
 				}
 			}
 		}

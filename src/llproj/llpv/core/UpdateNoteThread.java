@@ -11,7 +11,6 @@ import llproj.llpv.db.Database;
 public class UpdateNoteThread implements Runnable {
 	private static final Logger log = Logger.getLogger(UpdateNoteThread.class);
 	Database db;
-//	String[] dates;
 	JTextArea jTextArea5_1;
 	JTextArea jTextArea5_2;
 	SimpleDateFormat sdf = new SimpleDateFormat("ss");

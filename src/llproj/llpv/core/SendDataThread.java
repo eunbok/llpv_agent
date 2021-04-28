@@ -53,7 +53,7 @@ public class SendDataThread implements Runnable {
 
 				if (is_send_data) {
 					Date today = new Date();
-					// 3ÃÊ µô·¹ÀÌ
+					// delay 3sec
 					today.setSeconds(today.getSeconds() - 3);
 
 					int _sec = today.getMinutes() * 60 + today.getSeconds();
@@ -72,7 +72,7 @@ public class SendDataThread implements Runnable {
 						} catch (UnknownHostException e1) {
 							e1.printStackTrace();
 						}
-						// Çö½Ã°£ - ÁÖ±â ~ Çö½Ã°£ µ¥ÀÌÅÍ Á¶È¸
+						// í˜„ì‹œê°„ - ì£¼ê¸° ~ í˜„ì‹œê°„ ë°ì´í„° ì¡°íšŒ
 						for (int i = 0; i < data_arr.size(); i++) {
 							JSONObject temp = new JSONObject();
 
@@ -84,7 +84,7 @@ public class SendDataThread implements Runnable {
 							temp.put("stored_time", dv.getStored_time());
 							jsonArr.put(temp);
 						}
-						log.debug("º¸³»´Âµ¥ÀÌÅÍ °³¼ö : "+jsonArr.length() + " (length : "+jsonArr.toString().length()+")");
+						log.debug("send length : "+jsonArr.length() + " (length : "+jsonArr.toString().length()+")");
 
 						int stateCode = postData(CmnVal.url, jsonArr.toString());
 						log.debug("stateCode:"+stateCode);
@@ -132,9 +132,9 @@ public class SendDataThread implements Runnable {
 			ClientConnectionManager cm = new SingleClientConnManager(schemeRegistry);
 			HttpClient client = new DefaultHttpClient(cm);
 			
-//			HttpClient client = HttpClientBuilder.create().build(); // HttpClient »ı¼º
+//			HttpClient client = HttpClientBuilder.create().build();
 
-			HttpPost postRequest = new HttpPost(requestURL); // POST ¸Ş¼Òµå URL »õ¼º
+			HttpPost postRequest = new HttpPost(requestURL);
 //			postRequest.setHeader("Accept", "application/json");
 //			postRequest.setHeader("Connection", "keep-alive");
 			postRequest.setHeader("Content-Type", "application/json");
@@ -147,8 +147,8 @@ public class SendDataThread implements Runnable {
 //					  .build();
 //			postRequest.setConfig(requestConfig);
 
-//			postRequest.setEntity(new StringEntity(message)); // json ¸Ş½ÃÁö ÀÔ·Â
-			postRequest.setEntity(new StringEntity(message,"UTF-8")); // json ¸Ş½ÃÁö ÀÔ·Â
+//			postRequest.setEntity(new StringEntity(message));
+			postRequest.setEntity(new StringEntity(message,"UTF-8"));
 			
 			
 
