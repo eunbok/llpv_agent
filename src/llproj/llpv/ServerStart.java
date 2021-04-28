@@ -21,47 +21,47 @@ import llproj.llpv.util.MessageUt;
 import llproj.llpv.view.MainView;
 
 public class ServerStart {
-	private static final Logger log = Logger.getLogger(ServerStart.class);
+  private static final Logger log = Logger.getLogger(ServerStart.class);
 
-	public static Image image = Toolkit.getDefaultToolkit().getImage("resources/note.png");
-	public static TrayIcon trayIcon = new TrayIcon(image, CmnVal.process_title);
-	public static final Date TODAY = new Date();
-	public static final String TODAY_STR = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TODAY);
+  public static Image image = Toolkit.getDefaultToolkit().getImage("resources/note.png");
+  public static TrayIcon trayIcon = new TrayIcon(image, CmnVal.process_title);
+  public static final Date TODAY = new Date();
+  public static final String TODAY_STR = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TODAY);
 
-	public static void main(String[] args) throws Exception {
-		FileInputStream log4jRead = new FileInputStream("log4j.properties");
-		Properties log4jProperty = new Properties();
-		log4jProperty.load(log4jRead);
-		PropertyConfigurator.configure(log4jProperty);
-		log.info("[llprocessview " + CmnVal.Version + " Start ]");
-		
-		FileInputStream fileInputStream = new FileInputStream("llpv.properties");
-		Properties property = new Properties();
-		property.load(fileInputStream);
-		
-		MessageUt.setLocale(property.getProperty("lang"));
-		
-		//TODO 나중에 사용자 입력받기
-		boolean local_mode = true;
-		String url = "./data/llpv";
-		String id = "root";
-		String pass = "";
+  public static void main(String[] args) throws Exception {
+    FileInputStream log4jRead = new FileInputStream("log4j.properties");
+    Properties log4jProperty = new Properties();
+    log4jProperty.load(log4jRead);
+    PropertyConfigurator.configure(log4jProperty);
+    log.info("[llprocessview " + CmnVal.Version + " Start ]");
 
-		
-		Database db = null;
-		if (local_mode) {
-			db = new Database(url, id, pass);
-			db.createDB();
-		}
-		
-		new MainView(db);
-		
-		GetProcessThread getProcessRunnable = new GetProcessThread(db);
-		Thread getProcessThread = new Thread(getProcessRunnable);
-		getProcessThread.start();
+    FileInputStream fileInputStream = new FileInputStream("llpv.properties");
+    Properties property = new Properties();
+    property.load(fileInputStream);
 
-		SendDataThread sendDataRunnable = new SendDataThread(db);
-		Thread sendDataThread = new Thread(sendDataRunnable);
-		sendDataThread.start();
-	}
+    MessageUt.setLocale(property.getProperty("lang"));
+
+    // TODO 나중에 사용자 입력받기
+    boolean local_mode = true;
+    String url = "./data/llpv";
+    String id = "root";
+    String pass = "";
+
+
+    Database db = null;
+    if (local_mode) {
+      db = new Database(url, id, pass);
+      db.createDB();
+    }
+
+    new MainView(db);
+
+    GetProcessThread getProcessRunnable = new GetProcessThread(db);
+    Thread getProcessThread = new Thread(getProcessRunnable);
+    getProcessThread.start();
+
+    SendDataThread sendDataRunnable = new SendDataThread(db);
+    Thread sendDataThread = new Thread(sendDataRunnable);
+    sendDataThread.start();
+  }
 }

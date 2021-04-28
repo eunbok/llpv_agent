@@ -14,142 +14,143 @@ import llproj.llpv.util.MessageUt;
 import llproj.llpv.vo.DataVO;
 
 public class GetProcessThread implements Runnable {
-	private static final Logger log = Logger.getLogger(GetProcessThread.class);
-	Database db;
+  private static final Logger log = Logger.getLogger(GetProcessThread.class);
+  Database db;
 
-	public GetProcessThread(Database db) {
-		this.db = db;
-	}
+  public GetProcessThread(Database db) {
+    this.db = db;
+  }
 
-	public void run() {
-		try {
-			DataVO firstDv = new GetProcessJob().getProgram();
-			String runFile = firstDv.getRun_file();
-			String runTitle = firstDv.getRun_title();
-			String _datetime = firstDv.get_datetime();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-			SimpleDateFormat sdf2 = new SimpleDateFormat("SSS");
-			String stored_time = "";
-			int sec = 1;
+  public void run() {
+    try {
+      DataVO firstDv = new GetProcessJob().getProgram();
+      String runFile = firstDv.getRun_file();
+      String runTitle = firstDv.getRun_title();
+      String _datetime = firstDv.get_datetime();
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+      SimpleDateFormat sdf2 = new SimpleDateFormat("SSS");
+      String stored_time = "";
+      int sec = 1;
 
-			DataVO dv;
-			DataVO beforeDv;
+      DataVO dv;
+      DataVO beforeDv;
 
-			Calendar now;
-			while (true) {
-				now = Calendar.getInstance();
-				if ("000".equals(sdf2.format(now.getTime()))) {
-					break;
-				}
-				Thread.sleep(1);
-			}
+      Calendar now;
+      while (true) {
+        now = Calendar.getInstance();
+        if ("000".equals(sdf2.format(now.getTime()))) {
+          break;
+        }
+        Thread.sleep(1);
+      }
 
-			while (true) {
-				if (now.getTime().getTime() <= new Date().getTime()) {
-//					log.debug("check near 0 sec : "sdf1.format(new Date()));
-					dv = new GetProcessJob().getProgram();
+      while (true) {
+        if (now.getTime().getTime() <= new Date().getTime()) {
+          // log.debug("check near 0 sec : "sdf1.format(new Date()));
+          dv = new GetProcessJob().getProgram();
 
-					LimitProcess(dv);
+          LimitProcess(dv);
 
-					beforeDv = new DataVO();
-					stored_time = sdf.format(new Date());
+          beforeDv = new DataVO();
+          stored_time = sdf.format(new Date());
 
-					if (stored_time.substring(17, 19).equals("30")) {
-						db.setConfig("running_dt", stored_time.substring(0, 10));
-					}
-					if (stored_time.substring(17, 19).equals("00")) {
-						if (!db.getConfig("running_dt").equals(stored_time.substring(0, 10))) {
-							db.resetLimitRunSec();
-						}
-					}
+          if (stored_time.substring(17, 19).equals("30")) {
+            db.setConfig("running_dt", stored_time.substring(0, 10));
+          }
+          if (stored_time.substring(17, 19).equals("00")) {
+            if (!db.getConfig("running_dt").equals(stored_time.substring(0, 10))) {
+              db.resetLimitRunSec();
+            }
+          }
 
-					if (runFile.equals(dv.getRun_file()) && runTitle.equals(dv.getRun_title())) {
-						sec++;
-						if (sec > 59) {
-							dv.setRun_sec(sec);
-							dv.set_datetime(_datetime);
-							dv.setStored_time(stored_time);
-							db.insert(dv);
-							sec = 1;
-						}
-					} else {
-						beforeDv.setRun_file(runFile);
-						beforeDv.setRun_title(runTitle);
-						beforeDv.setRun_sec(sec);
-						beforeDv.set_datetime(_datetime);
-						beforeDv.setStored_time(stored_time);
-						db.insert(beforeDv);
-						sec = 1;
-						runFile = dv.getRun_file();
-						runTitle = dv.getRun_title();
-						_datetime = dv.get_datetime();
-					}
+          if (runFile.equals(dv.getRun_file()) && runTitle.equals(dv.getRun_title())) {
+            sec++;
+            if (sec > 59) {
+              dv.setRun_sec(sec);
+              dv.set_datetime(_datetime);
+              dv.setStored_time(stored_time);
+              db.insert(dv);
+              sec = 1;
+            }
+          } else {
+            beforeDv.setRun_file(runFile);
+            beforeDv.setRun_title(runTitle);
+            beforeDv.setRun_sec(sec);
+            beforeDv.set_datetime(_datetime);
+            beforeDv.setStored_time(stored_time);
+            db.insert(beforeDv);
+            sec = 1;
+            runFile = dv.getRun_file();
+            runTitle = dv.getRun_title();
+            _datetime = dv.get_datetime();
+          }
 
-					now.add(Calendar.SECOND, 1);
-				}
-				Thread.sleep(10);
-			}
-		} catch (
+          now.add(Calendar.SECOND, 1);
+        }
+        Thread.sleep(10);
+      }
+    } catch (
 
-		InterruptedException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    InterruptedException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
-	private void LimitProcess(DataVO dv) throws Exception {
-		String run_file = dv.getRun_file();
-		String run_title = dv.getRun_title();
-		int pid = dv.getPid();
+  private void LimitProcess(DataVO dv) throws Exception {
+    String run_file = dv.getRun_file();
+    String run_title = dv.getRun_title();
+    int pid = dv.getPid();
 
-		Iterator iter = CmnVal.limitList.keys();
-		while (iter.hasNext()) {
-			String key = iter.next().toString();
-			String keySplit[] = key.split(CmnVal.split_str);
-			if (keySplit.length == 1) {
-				if (run_file.equals(keySplit[0])) {
-					updateLimitRunSec(key, run_file, run_title, pid);
-				}
-			} else {
-				if (run_file.equals(keySplit[0]) && run_title.contains(keySplit[1])) {
-					updateLimitRunSec(key, run_file, run_title, pid);
-				}
-			}
-		}
+    Iterator iter = CmnVal.limitList.keys();
+    while (iter.hasNext()) {
+      String key = iter.next().toString();
+      String keySplit[] = key.split(CmnVal.split_str);
+      if (keySplit.length == 1) {
+        if (run_file.equals(keySplit[0])) {
+          updateLimitRunSec(key, run_file, run_title, pid);
+        }
+      } else {
+        if (run_file.equals(keySplit[0]) && run_title.contains(keySplit[1])) {
+          updateLimitRunSec(key, run_file, run_title, pid);
+        }
+      }
+    }
 
-	}
+  }
 
-	private void updateLimitRunSec(String key, String run_file, String run_title, int pid) throws Exception {
-		if (CmnVal.limitList.has(key)) {
-			int sec = CmnVal.limitList.getJSONObject(key).getInt("run_sec") + 1;
-			int limit_min = CmnVal.limitList.getJSONObject(key).getInt("limit_min");
-			CmnVal.limitList.getJSONObject(key).put("run_sec", sec);
-			db.updateLimitRunSec(key, sec);
+  private void updateLimitRunSec(String key, String run_file, String run_title, int pid)
+      throws Exception {
+    if (CmnVal.limitList.has(key)) {
+      int sec = CmnVal.limitList.getJSONObject(key).getInt("run_sec") + 1;
+      int limit_min = CmnVal.limitList.getJSONObject(key).getInt("limit_min");
+      CmnVal.limitList.getJSONObject(key).put("run_sec", sec);
+      db.updateLimitRunSec(key, sec);
 
-			if (CmnVal.is_use_limit) {
-				if ((limit_min - 5) * 60 == sec) {
-					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
-							MessageUt.getMessage("tray.limit.waring", "5", run_file), TrayIcon.MessageType.INFO);
-					log.info(MessageUt.getMessage("tray.limit.waring", "5", run_file));
-				}
+      if (CmnVal.is_use_limit) {
+        if ((limit_min - 5) * 60 == sec) {
+          ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+              MessageUt.getMessage("tray.limit.waring", "5", run_file), TrayIcon.MessageType.INFO);
+          log.info(MessageUt.getMessage("tray.limit.waring", "5", run_file));
+        }
 
-				if ((limit_min - 1) * 60 == sec) {
-					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
-							MessageUt.getMessage("tray.limit.waring", "1", run_file), TrayIcon.MessageType.INFO);
-					log.info(MessageUt.getMessage("tray.limit.waring", "1", run_file));
-				}
+        if ((limit_min - 1) * 60 == sec) {
+          ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+              MessageUt.getMessage("tray.limit.waring", "1", run_file), TrayIcon.MessageType.INFO);
+          log.info(MessageUt.getMessage("tray.limit.waring", "1", run_file));
+        }
 
-				if (limit_min * 60 <= sec) {
-					String cmd = "taskkill /F /PID " + pid;
-					Runtime.getRuntime().exec(cmd);
-					ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
-							MessageUt.getMessage("tray.limit.alert", run_file), TrayIcon.MessageType.INFO);
-					log.info(MessageUt.getMessage("tray.limit.alert", run_file));
-				}
-			}
-		}
-	}
+        if (limit_min * 60 <= sec) {
+          String cmd = "taskkill /F /PID " + pid;
+          Runtime.getRuntime().exec(cmd);
+          ServerStart.trayIcon.displayMessage(MessageUt.getMessage("tray"),
+              MessageUt.getMessage("tray.limit.alert", run_file), TrayIcon.MessageType.INFO);
+          log.info(MessageUt.getMessage("tray.limit.alert", run_file));
+        }
+      }
+    }
+  }
 }
