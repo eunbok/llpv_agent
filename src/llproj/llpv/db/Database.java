@@ -437,7 +437,6 @@ public class Database {
     try {
       Class.forName("org.h2.Driver");
       con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-
       stmt = con.createStatement();
       String sql = "SELECT config_value ";
       sql += "FROM t_config ";
@@ -555,7 +554,6 @@ public class Database {
       order_by = "order by _datetime desc ";
 
       where = "";
-
       sql = select + from + where + group_by + order_by;
 
       stmt = con.createStatement();
@@ -619,7 +617,6 @@ public class Database {
       jo.put("run_sec", 0);
       jo.put("limit_min", limit_min);
       CmnVal.limitList.put(limit_id, jo);
-
     } catch (SQLException e) {
       log.error("[SQL Error : " + e.getMessage() + "]");
       if (e.getMessage().contains("primary key")) {
@@ -652,11 +649,10 @@ public class Database {
     try {
       Class.forName("org.h2.Driver");
       con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-
       stmt = con.createStatement();
       String sql = "delete from t_limit where limit_id='" + value + "';";
       stmt.execute(sql);
-
+      CmnVal.limitList.remove(value);
     } catch (SQLException e) {
       log.error("[SQL Error : " + e.getMessage() + "]");
     } catch (ClassNotFoundException e1) {
@@ -726,7 +722,6 @@ public class Database {
     try {
       Class.forName("org.h2.Driver");
       con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-
       stmt = con.createStatement();
       String sql = "update t_limit set run_sec = " + sec + " where limit_id = '" + limit_id + "';";
       stmt.execute(sql);
@@ -792,7 +787,6 @@ public class Database {
     try {
       Class.forName("org.h2.Driver");
       con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-
       stmt = con.createStatement();
       String sql = "SELECT note_dt, note_text ";
       sql += "FROM t_note ";
