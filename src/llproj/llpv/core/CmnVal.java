@@ -8,7 +8,7 @@ import llproj.llpv.util.MessageUt;
 
 public class CmnVal {
   public static final String process_title = "llprocessView";
-  public static final String Version = "v1.0";
+  public static final String Version = "v1.1";
   public static String homepage = "www.llpv.kr";
   public static final String url = "https://llload.com:9995/rest";
   public static final String split_str = "_#_@!@_#_";
