@@ -44,7 +44,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS t_data(";
@@ -159,7 +159,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -208,7 +208,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -268,7 +268,7 @@ public class Database {
 			}
 
 			sql = select + from + where + group_by + order_by + limit;
-			// ¿À´Ã, ÀÏÁÖÀÏ, ÇÑ´Þ¿¡ ¸Â°Ô sql¹® º¯°æÇÏ±â
+			// ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ñ´Þ¿ï¿½ ï¿½Â°ï¿½ sqlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 
 			stmt = con.createStatement();
 
@@ -297,7 +297,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -348,7 +348,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -390,7 +390,7 @@ public class Database {
 					+ "%'))";
 
 			sql = select + from + where + group_by + order_by;
-			// ¿À´Ã, ÀÏÁÖÀÏ, ÇÑ´Þ¿¡ ¸Â°Ô sql¹® º¯°æÇÏ±â
+			// ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ñ´Þ¿ï¿½ ï¿½Â°ï¿½ sqlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 
 			stmt = con.createStatement();
 
@@ -408,7 +408,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -434,7 +434,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "SELECT config_value ";
@@ -447,7 +447,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -474,7 +474,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "update t_config set config_value = '" + value + "' where config_code = '" + config_code
@@ -484,7 +484,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -510,7 +510,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "delete from t_data;";
@@ -519,7 +519,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -559,7 +559,7 @@ public class Database {
 			where = "";
 
 			sql = select + from + where + group_by + order_by;
-			// ¿À´Ã, ÀÏÁÖÀÏ, ÇÑ´Þ¿¡ ¸Â°Ô sql¹® º¯°æÇÏ±â
+			// ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ñ´Þ¿ï¿½ ï¿½Â°ï¿½ sqlï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 
 			stmt = con.createStatement();
 
@@ -579,7 +579,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -607,7 +607,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String limit_id = run_file + CmnVal.split_str + run_title;
@@ -616,7 +616,7 @@ public class Database {
 					+ "');";
 			stmt.execute(sql);
 
-			// @ static map¿¡´Ù ³Ö±â
+			// @ static mapï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
 			JSONObject jo = new JSONObject();
 			jo.put("run_file", run_file);
 			jo.put("run_title", run_title);
@@ -627,10 +627,10 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 			if (e.getMessage().contains("primary key")) {
-				ServerStart.trayIcon.displayMessage("llpv ¾Ë¸²", "ÀÌ¹Ì Á¸ÀçÇÏ´Â ±ÔÄ¢ÀÔ´Ï´Ù.", TrayIcon.MessageType.INFO);
+				ServerStart.trayIcon.displayMessage("llpv ï¿½Ë¸ï¿½", "ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Ä¢ï¿½Ô´Ï´ï¿½.", TrayIcon.MessageType.INFO);
 			}
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -656,16 +656,16 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "delete from t_limit where limit_id='" + value + "';";
 			stmt.execute(sql);
-
+			CmnVal.limitList.remove(value);
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -691,7 +691,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "update t_limit set run_sec = 0;";
@@ -706,7 +706,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -733,7 +733,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "update t_limit set run_sec = " + sec + " where limit_id = '" + limit_id + "';";
@@ -741,7 +741,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -767,7 +767,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 
@@ -777,7 +777,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
@@ -803,7 +803,7 @@ public class Database {
 		try {
 			Class.forName("org.h2.Driver");
 			con = DriverManager.getConnection("jdbc:h2:file:" + url, id, pass);
-			// url, »ç¿ëÀÚ, ºñ¹Ð¹øÈ£
+			// url, ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£
 
 			stmt = con.createStatement();
 			String sql = "SELECT note_dt, note_text ";
@@ -820,7 +820,7 @@ public class Database {
 		} catch (SQLException e) {
 			log.error("[SQL Error : " + e.getMessage() + "]");
 		} catch (ClassNotFoundException e1) {
-			log.error("[JDBC Connector Driver ¿À·ù : " + e1.getMessage() + "]");
+			log.error("[JDBC Connector Driver ï¿½ï¿½ï¿½ï¿½ : " + e1.getMessage() + "]");
 		} finally {
 			if (stmt != null) {
 				try {
