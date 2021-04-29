@@ -33,140 +33,139 @@ import llproj.llpv.db.Database;
 import llproj.llpv.vo.DataVO;
 
 public class SendDataThread implements Runnable {
-	private static final Logger log = Logger.getLogger(SendDataThread.class);
-	Database db;
-	boolean is_send_data = false;
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  private static final Logger log = Logger.getLogger(SendDataThread.class);
+  Database db;
+  boolean is_send_data = false;
+  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	public SendDataThread(Database db) {
-		this.db = db;
-	}
+  public SendDataThread(Database db) {
+    this.db = db;
+  }
 
-	public void run() {
-		try {
-			while (true) {
-				if ("Y".equals(db.getConfig("is_send_data"))) {
-					is_send_data = true;
-				} else {
-					is_send_data = false;
-				}
+  public void run() {
+    try {
+      while (true) {
+        if ("Y".equals(db.getConfig("is_send_data"))) {
+          is_send_data = true;
+        } else {
+          is_send_data = false;
+        }
 
-				if (is_send_data) {
-					Date today = new Date();
-					// 3ÃÊ µô·¹ÀÌ
-					today.setSeconds(today.getSeconds() - 3);
+        if (is_send_data) {
+          Date today = new Date();
+          // delay 3sec
+          today.setSeconds(today.getSeconds() - 3);
 
-					int _sec = today.getMinutes() * 60 + today.getSeconds();
-					if (_sec % CmnVal.send_data_cycle_sec == 0) {
-						ArrayList data_arr = new ArrayList<DataVO>();
-						JSONArray jsonArr = new JSONArray();
+          int _sec = today.getMinutes() * 60 + today.getSeconds();
+          if (_sec % CmnVal.send_data_cycle_sec == 0) {
+            ArrayList data_arr = new ArrayList<DataVO>();
+            JSONArray jsonArr = new JSONArray();
 
-						String endDate = sdf.format(today);
-						today.setSeconds(today.getSeconds() - CmnVal.send_data_cycle_sec);
-						String startDate = sdf.format(today);
-						log.debug("[Send data] " + startDate + " ~ " + endDate);
-						db.getSendData(data_arr, startDate, endDate);
-						InetAddress local;
-						try {
-							local = InetAddress.getLocalHost();
-						} catch (UnknownHostException e1) {
-							e1.printStackTrace();
-						}
-						// Çö½Ã°£ - ÁÖ±â ~ Çö½Ã°£ µ¥ÀÌÅÍ Á¶È¸
-						for (int i = 0; i < data_arr.size(); i++) {
-							JSONObject temp = new JSONObject();
+            String endDate = sdf.format(today);
+            today.setSeconds(today.getSeconds() - CmnVal.send_data_cycle_sec);
+            String startDate = sdf.format(today);
+            log.debug("[Send data] " + startDate + " ~ " + endDate);
+            db.getSendData(data_arr, startDate, endDate);
+            InetAddress local;
+            try {
+              local = InetAddress.getLocalHost();
+            } catch (UnknownHostException e1) {
+              e1.printStackTrace();
+            }
+            // í˜„ì‹œê°„ - ì£¼ê¸° ~ í˜„ì‹œê°„ ë°ì´í„° ì¡°íšŒ
+            for (int i = 0; i < data_arr.size(); i++) {
+              JSONObject temp = new JSONObject();
 
-							DataVO dv = (DataVO) data_arr.get(i);
-							temp.put("run_file", dv.getRun_file());
-							temp.put("run_title", dv.getRun_title());
-							temp.put("run_sec", dv.getRun_sec());
-							temp.put("_datetime", dv.get_datetime());
-							temp.put("stored_time", dv.getStored_time());
-							jsonArr.put(temp);
-						}
-						log.debug("º¸³»´Âµ¥ÀÌÅÍ °³¼ö : "+jsonArr.length() + " (length : "+jsonArr.toString().length()+")");
+              DataVO dv = (DataVO) data_arr.get(i);
+              temp.put("run_file", dv.getRun_file());
+              temp.put("run_title", dv.getRun_title());
+              temp.put("run_sec", dv.getRun_sec());
+              temp.put("_datetime", dv.get_datetime());
+              temp.put("stored_time", dv.getStored_time());
+              jsonArr.put(temp);
+            }
+            log.debug("send length : " + jsonArr.length() + " (length : "
+                + jsonArr.toString().length() + ")");
 
-						int stateCode = postData(CmnVal.url, jsonArr.toString());
-						log.debug("stateCode:"+stateCode);
-					}
-				}
+            int stateCode = postData(CmnVal.url, jsonArr.toString());
+            log.debug("stateCode:" + stateCode);
+          }
+        }
 
-				Thread.sleep(1000);
-			}
-		} catch (InterruptedException e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-	}
+        Thread.sleep(1000);
+      }
+    } catch (InterruptedException e) {
+      log.error(e.getMessage());
+      e.printStackTrace();
+    }
+  }
 
-	// https://digitalbourgeois.tistory.com/58
-	private int postData(String requestURL, String message) {
-		int stateCode;
-		try {
-			SSLContext sslContext = SSLContext.getInstance("SSL");
+  // https://digitalbourgeois.tistory.com/58
+  private int postData(String requestURL, String message) {
+    int stateCode;
+    try {
+      SSLContext sslContext = SSLContext.getInstance("SSL");
 
-			// set up a TrustManager that trusts everything
-			sslContext.init(null, new TrustManager[] { new X509TrustManager() {
-			            public X509Certificate[] getAcceptedIssuers() {
-//			                    System.out.println("getAcceptedIssuers =============");
-			                    return null;
-			            }
+      // set up a TrustManager that trusts everything
+      sslContext.init(null, new TrustManager[] {new X509TrustManager() {
+        public X509Certificate[] getAcceptedIssuers() {
+          // System.out.println("getAcceptedIssuers =============");
+          return null;
+        }
 
-			            public void checkClientTrusted(X509Certificate[] certs,
-			                            String authType) {
-//			                    System.out.println("checkClientTrusted =============");
-			            }
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+          // System.out.println("checkClientTrusted =============");
+        }
 
-			            public void checkServerTrusted(X509Certificate[] certs,
-			                            String authType) {
-//			                    System.out.println("checkServerTrusted =============");
-			            }
-			} }, new SecureRandom());
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+          // System.out.println("checkServerTrusted =============");
+        }
+      }}, new SecureRandom());
 
-			SSLSocketFactory sf = new SSLSocketFactory(sslContext);
-			Scheme httpsScheme = new Scheme("https", 443, sf);
-			SchemeRegistry schemeRegistry = new SchemeRegistry();
-			schemeRegistry.register(httpsScheme);
+      SSLSocketFactory sf = new SSLSocketFactory(sslContext);
+      Scheme httpsScheme = new Scheme("https", 443, sf);
+      SchemeRegistry schemeRegistry = new SchemeRegistry();
+      schemeRegistry.register(httpsScheme);
 
-			// apache HttpClient version >4.2 should use BasicClientConnectionManager
-			ClientConnectionManager cm = new SingleClientConnManager(schemeRegistry);
-			HttpClient client = new DefaultHttpClient(cm);
-			
-//			HttpClient client = HttpClientBuilder.create().build(); // HttpClient »ý¼º
+      // apache HttpClient version >4.2 should use BasicClientConnectionManager
+      ClientConnectionManager cm = new SingleClientConnManager(schemeRegistry);
+      HttpClient client = new DefaultHttpClient(cm);
 
-			HttpPost postRequest = new HttpPost(requestURL); // POST ¸Þ¼Òµå URL »õ¼º
-//			postRequest.setHeader("Accept", "application/json");
-//			postRequest.setHeader("Connection", "keep-alive");
-			postRequest.setHeader("Content-Type", "application/json");
+      // HttpClient client = HttpClientBuilder.create().build();
 
-//			int timeOut = 10;
-//			RequestConfig requestConfig = RequestConfig.custom()
-//					  .setSocketTimeout(timeOut*1000)
-//					  .setConnectTimeout(timeOut*1000)
-//					  .setConnectionRequestTimeout(timeOut*1000)
-//					  .build();
-//			postRequest.setConfig(requestConfig);
+      HttpPost postRequest = new HttpPost(requestURL);
+      // postRequest.setHeader("Accept", "application/json");
+      // postRequest.setHeader("Connection", "keep-alive");
+      postRequest.setHeader("Content-Type", "application/json");
 
-//			postRequest.setEntity(new StringEntity(message)); // json ¸Þ½ÃÁö ÀÔ·Â
-			postRequest.setEntity(new StringEntity(message,"UTF-8")); // json ¸Þ½ÃÁö ÀÔ·Â
-			
-			
+      // int timeOut = 10;
+      // RequestConfig requestConfig = RequestConfig.custom()
+      // .setSocketTimeout(timeOut*1000)
+      // .setConnectTimeout(timeOut*1000)
+      // .setConnectionRequestTimeout(timeOut*1000)
+      // .build();
+      // postRequest.setConfig(requestConfig);
 
-			HttpResponse response = client.execute(postRequest);
+      // postRequest.setEntity(new StringEntity(message));
+      postRequest.setEntity(new StringEntity(message, "UTF-8"));
 
-			stateCode = response.getStatusLine().getStatusCode();
-			if (stateCode == 200) {
-				ResponseHandler<String> handler = new BasicResponseHandler();
-				String body = handler.handleResponse(response);
-				log.debug(body);
-			} else {
-				log.debug("response is error : " + stateCode);
-			}
-			return stateCode;
-		} catch (Exception e) {
-			System.err.println(e.toString());
-			return 500;
-		}
-	}
+
+
+      HttpResponse response = client.execute(postRequest);
+
+      stateCode = response.getStatusLine().getStatusCode();
+      if (stateCode == 200) {
+        ResponseHandler<String> handler = new BasicResponseHandler();
+        String body = handler.handleResponse(response);
+        log.debug(body);
+      } else {
+        log.debug("response is error : " + stateCode);
+      }
+      return stateCode;
+    } catch (Exception e) {
+      System.err.println(e.toString());
+      return 500;
+    }
+  }
 
 }
