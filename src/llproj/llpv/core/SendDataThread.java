@@ -39,9 +39,7 @@ public class SendDataThread implements Runnable {
 
   public void run() {
     try {
-      // delay 3sec
       Calendar calendar = Calendar.getInstance();
-      calendar.add(Calendar.SECOND, -3);
       calendar.add(Calendar.MINUTE, CmnVal.send_data_cycle_min);
       while (true) {
         if ("Y".equals(db.getConfig("is_send_data"))) {
@@ -52,7 +50,7 @@ public class SendDataThread implements Runnable {
 
         if (is_send_data) {
           if (calendar.getTime().getTime() <= new Date().getTime()) {
-            ArrayList data_arr = new ArrayList<DataVO>();
+            ArrayList<DataVO> data_arr = new ArrayList<DataVO>();
             JSONArray jsonArr = new JSONArray();
 
             String endDate = sdf.format(calendar.getTime());
