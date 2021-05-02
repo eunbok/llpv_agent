@@ -1,17 +1,14 @@
 package llproj.llpv.core;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -23,12 +20,10 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.SingleClientConnManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import llproj.llpv.db.Database;
 import llproj.llpv.vo.DataVO;
 
@@ -44,6 +39,8 @@ public class SendDataThread implements Runnable {
 
   public void run() {
     try {
+      Calendar calendar = Calendar.getInstance();
+      calendar.add(Calendar.MINUTE, CmnVal.send_data_cycle_min);
       while (true) {
         if ("Y".equals(db.getConfig("is_send_data"))) {
           is_send_data = true;
@@ -52,26 +49,15 @@ public class SendDataThread implements Runnable {
         }
 
         if (is_send_data) {
-          Date today = new Date();
-          // delay 3sec
-          today.setSeconds(today.getSeconds() - 3);
-
-          int _sec = today.getMinutes() * 60 + today.getSeconds();
-          if (_sec % CmnVal.send_data_cycle_sec == 0) {
-            ArrayList data_arr = new ArrayList<DataVO>();
+          if (calendar.getTime().getTime() <= new Date().getTime()) {
+            ArrayList<DataVO> data_arr = new ArrayList<DataVO>();
             JSONArray jsonArr = new JSONArray();
 
-            String endDate = sdf.format(today);
-            today.setSeconds(today.getSeconds() - CmnVal.send_data_cycle_sec);
-            String startDate = sdf.format(today);
+            String endDate = sdf.format(calendar.getTime());
+            calendar.add(Calendar.MINUTE, -CmnVal.send_data_cycle_min);
+            String startDate = sdf.format(calendar.getTime());
             log.debug("[Send data] " + startDate + " ~ " + endDate);
             db.getSendData(data_arr, startDate, endDate);
-            InetAddress local;
-            try {
-              local = InetAddress.getLocalHost();
-            } catch (UnknownHostException e1) {
-              e1.printStackTrace();
-            }
             // 현시간 - 주기 ~ 현시간 데이터 조회
             for (int i = 0; i < data_arr.size(); i++) {
               JSONObject temp = new JSONObject();
@@ -89,6 +75,7 @@ public class SendDataThread implements Runnable {
 
             int stateCode = postData(CmnVal.url, jsonArr.toString());
             log.debug("stateCode:" + stateCode);
+            calendar.add(Calendar.MINUTE, CmnVal.send_data_cycle_min * 2);
           }
         }
 

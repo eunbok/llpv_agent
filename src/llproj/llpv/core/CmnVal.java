@@ -13,7 +13,7 @@ public class CmnVal {
   public static final String url = "https://llload.com:9995/rest";
   public static final String split_str = "_#_@!@_#_";
   public static int cycle_sec = 10;
-  public static int send_data_cycle_sec = 60;
+  public static int send_data_cycle_min = 10;
   public static int update_note_cycle_sec = 10;
   public static int rank_combo_box1_1_idx = 0;
   public static int rank_combo_box1_2_idx = 0;
