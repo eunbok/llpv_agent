@@ -159,7 +159,7 @@ public class SettingPanel extends JPanel {
     settingSync.add(syncText);
     settingSync.add(syncCheckBox);
     settingSync.setBorder(settingSyncBorder);
-    settingGrid.add(settingSync);
+//    settingGrid.add(settingSync);
 
     alarmRunTimeText.setFont(CmnVal.font);
     alarmRunTimerText.setFont(CmnVal.font);
